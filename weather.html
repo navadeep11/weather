@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right,rgb(34, 219, 151),rgb(0, 183, 255));
+        }
+        img{
+            width: 200px;
+            margin: 20px;
+        }
+        .con{
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            user-select: none;
+
+        }
+        input{
+            padding: 5px;
+            width: 200px;
+            margin-top: 20px;
+            border-radius: 10px;
+            outline: none;
+            border: 2px solid black;
+            font-size: 16px;
+        }
+        button{
+            padding: 7px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background-color: rgb(0, 166, 255);
+            font-size: 16px;
+            width: 50px;
+            font-weight: 500;
+        }
+        p{
+            font-size: 30px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        .temp{
+            font-size: 35px;
+        }
+    </style>
+</head>
+<body>
+    <div class="con">
+        <div class="title">
+            <p>Weather App</p>
+        </div>
+        <div class="input">
+            <input type="text" id="location" placeholder="Location...">
+            <button id="btn">Get</button>
+        </div>
+        <div class="info">
+            <img src="cloud.jpg" alt="">
+            <div class="temp"><span class="temp-val">25</span><span class="unit">&#176</span>C</div>
+            <div id="weather-dis">Cloudy</div>
+            <div id="loc">Hyderbad</div>
+        </div>
+    </div>
+    
+
+    <script>
+        let input=document.getElementById('location')
+        let btn=document.getElementById('btn')
+        let value=document.querySelector('.temp-val')
+        let loc=document.getElementById('loc')
+        let dis=document.getElementById('weather-dis')
+        let apikey='839036b13cd80e17fa76b278e3d6e946';
+        btn.onclick=()=>{
+            if(input.value==""){
+                alert("Enter Location...")
+            }else{
+                let area=input.value
+                let url=`https://api.openweathermap.org/data/2.5/weather?q=${area}&appid=${apikey}`
+                fetch(url).then(res => res.json())
+                .then(data=>{
+                   console.log(data)
+                   const {name}=data
+                   const {feels_like}=data.main 
+                   const {description}=data.weather[0]
+                   value.innerText=Math.floor(feels_like-273)
+                   loc.innerText=name
+                   dis.innerText=description
+                })
+                .catch(()=>{
+                    alert("Enter valid Location")
+                })
+                input.value=""
+            }
+        }
+    </script>
+</body>
+</html>
